@@ -1,16 +1,16 @@
-import http from 'node:http';
-import { json } from './utils/response.js';
-import {listUsers} from './users/users.controller.js'
+import express from 'express';
+const app = express();
 
-const listener = (request,response) => {
+app.use(express.json());
 
-    if(request.url === '/users') {
-        return listUsers(request, response)
-    }
+// Define a route
+app.get('/', (req, res) => {
+    res.json({
+        message : 'User Mamagement APi'
+    });
+});
 
-    return json(response, 404, {messages : 'not foud'});
-};
-const server = http.createServer(listener);
-server.listen(3000);
-
-console.log('Server running at http://localhost:3000/');
+// Start the server
+app.listen(3000, () => {
+    console.log('Server is running on http://localhost:3000');
+});

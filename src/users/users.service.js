@@ -10,4 +10,21 @@ export async function createUser( userData) {
   return prisma.user.create({
     data: userData,
   });
+}// comme des requêtes sql
+
+// get all the record
+export async function listUsers(){
+  return prisma.user.findMany();
+}
+
+export async function getUserById(id) {
+  return prisma.user.findUnique({
+    where : { id }
+  });
+}
+
+export async function deleteUserId(id){
+  return prisma.user.delete({
+    where : { id }
+  });
 }

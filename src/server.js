@@ -1,6 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
-
+import usersRouter from './users/users.routes.js';
 dotenv.config();
 const app = express();
 
@@ -13,6 +13,7 @@ app.get('/', (req, res) => {
     });
 });
 
+app.use('/users',usersRouter);
 // Start the server
 const port = process.env.PORT || 3000;
 app.listen(port, () => {

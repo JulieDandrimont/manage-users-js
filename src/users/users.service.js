@@ -1,14 +1,13 @@
-import {prisma} from "../utils/prisma.js";
+import { prisma } from '../utils/prisma.js';
 
-function findUsersByEmail(email){
-
-    return prisma.user.findUnique({
-        where: {email} //synthaxe js
-    });
+export async function findUserByEmail(email) {
+  return prisma.user.findUnique({
+    where: { email },
+  });
 }
 
-function createUser({userData}){
-    return prisma.user.create({
-        data: userData
-    });
+export async function createUser( userData) {
+  return prisma.user.create({
+    data: userData,
+  });
 }

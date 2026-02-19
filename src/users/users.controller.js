@@ -89,6 +89,20 @@ export async function handleUpdateUser(req,res){
         if (!user){
             return res.status(404).json({message:'User not found'});
         }
+        // Vérifier que l'email n'existe pas déjà
+        if (req.body.email){
+            const existingEmail = await findUserByEmail(req.body.email);
+            if (existingEmail && req.body.email!= user.email) {
+            return res.status(409).json({message:'Email already in use'});
+        }
+        }
+        if(Object.keys(req.body).length === 0 ){
+            return res.status(400).json({
+                error: 'Validation error',
+                fields: {body: 'Provide at least one field to update',},
+            });
+        }
+
         // validate user data
         const results = validateUpdateUser(req.body);  
         if (!results.ok){
@@ -96,6 +110,7 @@ export async function handleUpdateUser(req,res){
             message:'validation failed',
             errors :results.errors
         });
+
     }
 
     const updatedUser = await updateUser(id,results.data);

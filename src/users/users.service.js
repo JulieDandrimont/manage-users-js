@@ -28,3 +28,11 @@ export async function deleteUserId(id){
     where : { id }
   });
 }
+
+
+export async function updateUser(id, data) {
+  return prisma.user.update({
+    where: { id },
+    data
+  });
+}

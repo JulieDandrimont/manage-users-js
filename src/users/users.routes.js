@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { handleCreateUser, handleListUsers, handleGetUserById, handleDeleteUserId} from "./users.controller.js";
+import { handleCreateUser, handleListUsers, handleGetUserById, handleDeleteUserId, handleUpdateUser} from "./users.controller.js";
 
 const router = Router();
 
@@ -11,5 +11,8 @@ router.get('/', handleListUsers);
 router.get('/:id', handleGetUserById)
 
 router.delete('/:id', handleDeleteUserId)
+
+router.patch('/:id', handleUpdateUser)
+
 export default router;
 

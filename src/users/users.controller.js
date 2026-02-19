@@ -1,5 +1,5 @@
-import {createUser, findUserByEmail, listUsers, getUserById,deleteUserId} from "./users.service.js";
-import {validateUser} from "./users.validation.js";
+import {createUser, findUserByEmail, listUsers, getUserById,deleteUserId,updateUser} from "./users.service.js";
+import {validateUser, validateUpdateUser} from "./users.validation.js";
 
 export async function handleCreateUser(req, response) {             //cette fonction remplace la route post /users
     try {
@@ -72,4 +72,37 @@ export async function handleDeleteUserId(req, res){
     } catch(error){
         return res.status(500).json({error:error.message});
     }
+}
+
+ 
+
+export async function handleUpdateUser(req,res){
+    try{
+        //check if user already exists
+        const {id} = req.params;
+        
+        if (!id){
+            return res.status(400).json({message:'Missing user ID'});
+        }
+        // verify if user exists
+        const user = await getUserById(id);
+        if (!user){
+            return res.status(404).json({message:'User not found'});
+        }
+        // validate user data
+        const results = validateUpdateUser(req.body);  
+        if (!results.ok){
+        return res.status(400).json({
+            message:'validation failed',
+            errors :results.errors
+        });
+    }
+
+    const updatedUser = await updateUser(id,results.data);
+    return res.status(200).json(updatedUser);
+    } catch (error){
+            return res.status(500).json({ error : error.message})
+        }
+   
+
 }

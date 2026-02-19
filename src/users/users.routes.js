@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { handleCreateUser, handleListUsers, handleGetUserById, handleDeleteUserId, handleUpdateUser} from "./users.controller.js";
+import { handleCreateUser, handleListUsers, handleGetUserById, handleDeleteUserId, handleUpdateUser,handleGetUserByEmail} from "./users.controller.js";
 
 const router = Router();
 
@@ -8,11 +8,14 @@ router.post('/', handleCreateUser);
 
 router.get('/', handleListUsers);
 
+router.get('/search',handleGetUserByEmail) // pas fini
+
 router.get('/:id', handleGetUserById)
 
 router.delete('/:id', handleDeleteUserId)
 
 router.patch('/:id', handleUpdateUser)
+
 
 export default router;
 

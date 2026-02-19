@@ -121,3 +121,20 @@ export async function handleUpdateUser(req,res){
    
 
 }
+
+export async function handleGetUserByEmail(req,res) { // à modifiiiier 
+    try {
+        // on aurait pu faire une vérification regex d'un email ici
+        const {email} = req.query;
+        if (!email){
+            return res.status(400).json({message:'Missing email'});
+        }
+        const user = await findUserByEmail(email);
+        if (!user){
+            return res.status(404).json({message:'User not found'});
+        }
+        return res.status(200).json(user);
+    } catch (error) {
+        return res.status(500).json({message:'bug server'});
+    }
+}

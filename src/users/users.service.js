@@ -29,10 +29,10 @@ export async function deleteUserId(id){
   });
 }
 
-
 export async function updateUser(id, data) {
   return prisma.user.update({
     where: { id },
     data
   });
 }
+

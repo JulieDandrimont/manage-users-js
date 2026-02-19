@@ -3,6 +3,7 @@ import {validateUser, validateUpdateUser} from "./users.validation.js";
 
 export async function handleCreateUser(req, response) {             //cette fonction remplace la route post /users
     try {
+        req.body.email = req.body.email.toLowerCase().trim()//normalized email 
         const result = validateUser(req.body);
 
         if (!result.ok) {                                           // Si la validation échoue, on retourne une réponse d'erreur 
@@ -19,11 +20,11 @@ export async function handleCreateUser(req, response) {             //cette fonc
         }
 
         // Créer l'utilisateur
+        
         const user = await createUser(req.body);
         return response.status(201).json(user);
-
         } catch (error) {
-        return response.status(400).json({error : error.message});
+        return response.status(500).json({error : error.message});
         }
 }
 
@@ -104,7 +105,7 @@ export async function handleUpdateUser(req,res){
         }
 
         // validate user data
-        const results = validateUpdateUser(req.body);  
+        const results = validateUpdateUser(req.body);
         if (!results.ok){
         return res.status(400).json({
             message:'validation failed',
@@ -112,7 +113,9 @@ export async function handleUpdateUser(req,res){
         });
 
     }
-
+    if (Object.keys(req.body).includes("email")){
+        results.data.email = results.data.email.toLowerCase().trim()
+    }
     const updatedUser = await updateUser(id,results.data);
     return res.status(200).json(updatedUser);
     } catch (error){

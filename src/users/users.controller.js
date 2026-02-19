@@ -1,5 +1,5 @@
 import {createUser, findUserByEmail, listUsers, getUserById,deleteUserId,updateUser} from "./users.service.js";
-import {validateUser, validateUpdateUser} from "./users.validation.js";
+import {validateUser, validateUpdateUser, isStrongPassword} from "./users.validation.js";
 
 export async function handleCreateUser(req, response) {             //cette fonction remplace la route post /users
     try {
@@ -141,3 +141,42 @@ export async function handleGetUserByEmail(req,res) { // à modifiiiier
         return res.status(500).json({message:'bug server'});
     }
 }
+
+
+export async function handleGetCount(req, res){
+    try {
+        const users = await listUsers();
+        const count = Object.keys(users).length
+        return res.status(200).json({UserCount : count});
+    } catch (error) {
+        return res.status(500).json({error:error.message});
+    }
+
+}
+
+
+export async function handleUpdatePassword(req,res){
+    try{
+        //check if ID already exists
+        const {id} = req.params;
+        
+        if (!id){
+            return res.status(400).json({message:'Missing user ID'});
+        }
+        // verify if user exists
+        const user = await getUserById(id);
+        if (!user){
+            return res.status(404).json({message:'User not found, you have to exist to change password'});
+        }
+        // Vérifier que l'email n'existe pas déjà
+        const strongEnoughPassword = await  isStrongPassword(req.body.password)
+        if (!strongEnoughPassword){
+            return res.status(400).json({message:'password should be at least 8 caracters'});
+        }
+        
+        const updatedUser = await updateUser(id, {password :req.body.password});
+        return res.status(200).json({ message: 'Password updated successfully', updatedUser });
+    } catch (error){
+            return res.status(500).json({ error : error.message})
+        }}
+        

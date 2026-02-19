@@ -6,7 +6,7 @@ function isEmail(value){
     return typeof value === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
 
-function isStrongPassword(value){
+export function isStrongPassword(value){
     return typeof value === 'string' && value.length >= 8;
 }
 

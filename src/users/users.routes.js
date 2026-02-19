@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { handleCreateUser, handleListUsers, handleGetUserById, handleDeleteUserId, handleUpdateUser,handleGetUserByEmail} from "./users.controller.js";
+import { handleCreateUser, handleListUsers, handleGetUserById, handleDeleteUserId, handleUpdateUser,handleGetUserByEmail,handleGetCount,handleUpdatePassword} from "./users.controller.js";
 
 const router = Router();
 
@@ -10,12 +10,14 @@ router.get('/', handleListUsers);
 
 router.get('/search',handleGetUserByEmail) // pas fini
 
+router.get('/count', handleGetCount)
+
 router.get('/:id', handleGetUserById)
 
 router.delete('/:id', handleDeleteUserId)
 
 router.patch('/:id', handleUpdateUser)
-
+router.patch('/:id/password', handleUpdatePassword)
 
 export default router;
 
